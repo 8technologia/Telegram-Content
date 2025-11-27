@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cấu Hình Bot - Telegram SEO Content Bot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --text-main: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .logo i {
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #eef2ff;
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* --- Sections & Cards --- */
+        .section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: #eef2ff;
+            color: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Forms --- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .label-desc {
+            font-weight: 400;
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-main);
+            background: #fff;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        input:disabled {
+            background: #f9fafb;
+            cursor: not-allowed;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* --- Toggle Switch --- */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ẩn checkbox mặc định */
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 44px;
+            height: 24px;
+            background: #d1d5db;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+            outline: none;
+            border: none; 
+        }
+
+        input[type="checkbox"]::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        input[type="checkbox"]:checked {
+            background: var(--primary);
+        }
+
+        input[type="checkbox"]:checked::after {
+            transform: translateX(20px);
+        }
+
+        /* --- Footer Actions --- */
+        .actions-bar {
+            position: fixed;
+            bottom: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 20px 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            z-index: 90;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* --- Alert --- */
+        #alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 350px;
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border-left: 4px solid;
+            background: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            animation: slideLeft 0.3s ease;
+        }
+
+        @keyframes slideLeft {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .alert-success { border-color: var(--success); }
+        .alert-error { border-color: #ef4444; }
+
+        /* --- Sub-header for Providers --- */
+        .sub-divider {
+            margin: 24px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Ẩn sidebar trên mobile cho đơn giản */
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .actions-bar {
+                left: 0;
+                padding: 15px 20px;
+            }
+            body {
+                padding-bottom: 80px; /* Space for fixed action bar */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="ri-robot-2-line"></i>
+            <span>Bot Content Config</span>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item active" onclick="scrollToSection('sec-telegram')">
+                <i class="ri-telegram-line"></i> Telegram
+            </li>
+            <li class="nav-item" onclick="scrollToSection('sec-webhook')">
+                <i class="ri-link-m"></i> Webhook
+            </li>
+            <li class="nav-item" onclick="scrollToSection('sec-ai')">
+                <i class="ri-openai-line"></i> AI Provider
+            </li>
+            <li class="nav-item" onclick="scrollToSection('sec-ratelimit')">
+                <i class="ri-timer-flash-line"></i> Rate Limit
+            </li>
+            <li class="nav-item" onclick="scrollToSection('sec-logs')">
+                <i class="ri-file-list-3-line"></i> Logging
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Cấu Hình Hệ Thống</h1>
+            <p>Quản lý toàn bộ cài đặt cho Telegram Auto Content Bot một cách trực quan.</p>
+        </div>
+
+        <div id="alert-container"></div>
+
+        <form id="config-form">
+            <div class="section" id="sec-telegram">
+                <div class="section-header">
+                    <div class="section-icon"><i class="ri-telegram-fill"></i></div>
+                    <div class="section-title">Kết Nối Telegram</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Bot Token <span class="label-desc">Lấy từ @BotFather</span></label>
+                    <input type="text" id="telegram-botToken" placeholder="1234567890:ABCdefGHIjklMNOpqrsTUVwxyz">
+                    <div class="help-text"><i class="ri-information-line"></i> Token này cấp quyền truy cập vào Bot API.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Secret Token <span class="label-desc">(Tùy chọn) Bảo mật Webhook</span></label>
+                    <input type="text" id="telegram-secretToken" placeholder="Chuỗi ký tự ngẫu nhiên để xác thực">
+                </div>
+            </div>
+
+            <div class="section" id="sec-webhook">
+                <div class="section-header">
+                    <div class="section-icon"><i class="ri-global-line"></i></div>
+                    <div class="section-title">Webhook Endpoint</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Webhook URL <span class="label-desc">Nơi nhận kết quả bài viết</span></label>
+                    <input type="text" id="webhookUrl" placeholder="https://your-domain.com/webhook/endpoint">
+                    <div class="help-text"><i class="ri-link"></i> URL phải hỗ trợ HTTPS và có thể truy cập public.</div>
+                </div>
+            </div>
+
+            <div class="section" id="sec-ai">
+                <div class="section-header">
+                    <div class="section-icon"><i class="ri-brain-line"></i></div>
+                    <div class="section-title">Cấu Hình AI Trí Tuệ Nhân Tạo</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>AI Provider Mặc Định</label>
+                        <select id="ai-defaultProvider">
+                            <option value="claude">Claude (Anthropic)</option>
+                            <option value="openrouter">OpenRouter</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Temperature (Sáng tạo) <span class="label-desc">0.0 - 2.0</span></label>
+                        <input type="number" id="ai-temperature" step="0.1" min="0" max="2" value="0.7">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-wrapper">
+                        <div class="toggle-label">
+                            <span>Backup AI</span>
+                            <span class="label-desc" style="margin:0">Tự động chuyển Provider nếu lỗi</span>
+                        </div>
+                        <input type="checkbox" id="ai-backupAI">
+                    </div>
+                </div>
+
+                <div class="sub-divider"><i class="ri-magic-line"></i> Claude Settings</div>
+                
+                <div class="form-group">
+                    <label>Claude API Key</label>
+                    <input type="text" id="ai-claude-apiKey" placeholder="sk-ant-api03-...">
+                </div>
+
+                <div class="form-group">
+                    <label>Claude Model</label>
+                    <input type="text" id="ai-claude-model" placeholder="claude-sonnet-4-5-20250929">
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Title Max Tokens</label>
+                        <input type="number" id="ai-claude-titleMaxTokens" min="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Outline Max Tokens</label>
+                        <input type="number" id="ai-claude-outlineMaxTokens" min="100">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Article Max Tokens</label>
+                    <input type="number" id="ai-claude-articleMaxTokens" min="100">
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Input Price ($)</label>
+                        <input type="number" id="ai-claude-inputPrice" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Output Price ($)</label>
+                        <input type="number" id="ai-claude-outputPrice" step="0.01">
+                    </div>
+                </div>
+
+                <div class="sub-divider"><i class="ri-router-line"></i> OpenRouter Settings</div>
+
+                <div class="form-group">
+                    <label>OpenRouter API Key</label>
+                    <input type="text" id="ai-openRouter-apiKey" placeholder="sk-or-v1-...">
+                </div>
+
+                <div class="form-group">
+                    <label>OpenRouter Model</label>
+                    <input type="text" id="ai-openRouter-model" placeholder="anthropic/claude-sonnet-4.5">
+                </div>
+            </div>
+
+            <div class="section" id="sec-ratelimit">
+                <div class="section-header">
+                    <div class="section-icon"><i class="ri-speed-up-line"></i></div>
+                    <div class="section-title">Giới Hạn & Timeout</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-wrapper">
+                        <div class="toggle-label">
+                            <span>Kích hoạt Rate Limiting</span>
+                            <span class="label-desc" style="margin:0">Bảo vệ bot khỏi spam</span>
+                        </div>
+                        <input type="checkbox" id="rateLimit-enabled">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Max Requests Per Minute</label>
+                    <input type="number" id="rateLimit-maxRequestsPerMinute" min="1">
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Default AI Timeout (ms)</label>
+                        <input type="number" id="rateLimit-aiRequestTimeout">
+                    </div>
+                    <div class="form-group">
+                        <label>Title Timeout (ms)</label>
+                        <input type="number" id="rateLimit-aiTitleTimeout">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Outline Timeout (ms)</label>
+                        <input type="number" id="rateLimit-aiOutlineTimeout">
+                    </div>
+                    <div class="form-group">
+                        <label>Article Timeout (ms)</label>
+                        <input type="number" id="rateLimit-aiArticleTimeout">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="sec-logs">
+                <div class="section-header">
+                    <div class="section-icon"><i class="ri-file-list-line"></i></div>
+                    <div class="section-title">Nhật Ký Hệ Thống</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Log Level</label>
+                    <select id="logging-level">
+                        <option value="debug">Debug (Chi tiết nhất)</option>
+                        <option value="info">Info (Khuyến nghị)</option>
+                        <option value="warn">Warning (Cảnh báo)</option>
+                        <option value="error">Error (Chỉ lỗi)</option>
+                    </select>
+                    <div class="help-text">Mức độ chi tiết của log ghi nhận trong console hoặc file.</div>
+                </div>
+            </div>
+        </form>
+
+        <div style="height: 60px;"></div> </main>
+
+    <div class="actions-bar">
+        <button type="button" class="btn btn-secondary" id="btn-reset">
+            <i class="ri-refresh-line"></i> Khôi Phục
+        </button>
+        <button type="submit" class="btn btn-primary" id="btn-save" form="config-form">
+            <i class="ri-save-3-line"></i> Lưu Cấu Hình
+        </button>
+    </div>
+
+    <script>
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if(element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Update active state in sidebar
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        // Highlight active section on scroll (Optional simple implementation)
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            if(current) {
+                document.querySelectorAll('.nav-item').forEach(li => {
+                    li.classList.remove('active');
+                    if(li.getAttribute('onclick').includes(current)) {
+                        li.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="/config.js"></script>
+</body>
+</html>
