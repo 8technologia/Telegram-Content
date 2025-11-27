@@ -1,6 +1,6 @@
-# Telegram SEO Content Bot
+# Telegram Auto Content Bot
 
-Bot Telegram tự động tạo nội dung SEO sử dụng trí tuệ nhân tạo Claude AI, với khả năng gửi kết quả đến webhook để xử lý tiếp tại n8n hoặc các hệ thống khác.
+Bot Telegram tự động tạo nội dung sử dụng trí tuệ nhân tạo Claude AI, với khả năng gửi kết quả đến webhook để xử lý tiếp tại n8n hoặc các hệ thống khác.
 
 ## Tác giả
 
